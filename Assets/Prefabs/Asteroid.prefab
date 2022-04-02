@@ -49,9 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipLogic: {fileID: 0}
   ResourceSpawn: {fileID: 4624243372881237174, guid: a32dedbc75698dd4bba38e7bd610da3f, type: 3}
-  speed: 2.78
+  speed: 4.76
   IsMining: 0
-  ResourceSpawnRate: 50
+  ResourceSpawnRate: 117.14
 --- !u!54 &2756651996477898972
 Rigidbody:
   m_ObjectHideFlags: 0

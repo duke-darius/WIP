@@ -1,3 +1,4 @@
+using Assets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,8 +25,11 @@ public class AsteroidLogic : MonoBehaviour
 
         var rigid = GetComponent<Rigidbody>();
         var vel = shipLogic.Ship.transform.position - transform.position;
+        vel.AddRandom(Vector3.zero, new Vector3(20, 0, 20));
         rigid.AddForce(vel * speed);
         rigid.AddTorque(RandomVector(), ForceMode.Impulse);
+
+        Destroy(gameObject, 45);
     }
 
     private Vector3 RandomVector()

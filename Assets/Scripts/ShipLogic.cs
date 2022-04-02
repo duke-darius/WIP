@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipLogic : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class ShipLogic : MonoBehaviour
     public DateTime LastShot = DateTime.MinValue;
     public float ShotInterval = 200;
     public float ProjectileSpeed = 5;
+
+
+    public decimal Energy = 100;
+    public decimal MaxEnergy = 100;
+    public decimal EnergyGain = 0.001M;
 
 
     // Start is called before the first frame update
@@ -60,8 +66,11 @@ public class ShipLogic : MonoBehaviour
         {
             if(LastShot < DateTime.Now.AddMilliseconds(-ShotInterval))
             {
-                LastShot = DateTime.Now;
-                CreateProjectile();
+                if (CanFireProjectile())
+                {
+                    LastShot = DateTime.Now;
+                    CreateProjectile();
+                }
             }
             //renderer.enabled = true;
             //var mousePos = Input.mousePosition;
@@ -75,7 +84,28 @@ public class ShipLogic : MonoBehaviour
         {
             //renderer.enabled = false;
         }
+        RunEnergyGain();
+        var text = GetComponentInChildren<Text>();
+        text.text = $"{Energy:0}/{MaxEnergy:0.##}";
+    }
 
+    private void RunEnergyGain()
+    {
+        Energy += EnergyGain;
+    }
+
+    internal void AddEnergy(long energy)
+    {
+        Energy += energy;
+        if(Energy > MaxEnergy)
+            Energy = MaxEnergy; 
+
+        
+    }
+
+    private bool CanFireProjectile()
+    {
+        return (Energy >= 10);
     }
 
     private void CreateProjectile()
@@ -88,5 +118,6 @@ public class ShipLogic : MonoBehaviour
         var vel = Camera.main.ScreenToWorldPoint(screenPoint) - transform.position;
         vel.y = 0;
         rigid.AddForce(vel * ProjectileSpeed);
+        Energy -= 10;
     }
 }

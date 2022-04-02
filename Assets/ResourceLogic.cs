@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceLogin : MonoBehaviour
+public class ResourceLogic : MonoBehaviour
 {
     private DateTime Spawned = DateTime.MaxValue;
     public bool IsTracking = false;
+    public long Energy = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +47,10 @@ public class ResourceLogin : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, ship.transform.position, Time.deltaTime * 100);
             }
             else
+            {
+                ship.AddEnergy(Energy);
                 Destroy(gameObject);
+            }
         }
     }
 }

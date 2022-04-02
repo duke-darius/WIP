@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteroidSpawnerLogin : MonoBehaviour
+public class AsteroidSpawnerLogic : MonoBehaviour
 {
     public ShipLogic Target;
     public AsteroidLogic Spawner;
