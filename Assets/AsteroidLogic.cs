@@ -39,12 +39,14 @@ public class AsteroidLogic : MonoBehaviour
 
     public void StartMining()
     {
+        if (IsMining == false) { 
         Destroy(gameObject, 2);
         var rigid = GetComponent<Rigidbody>();
         rigid.velocity = Vector3.zero;
-        
+
         rigid.freezeRotation = true;
         IsMining = true;
+        }
         
     }
 
