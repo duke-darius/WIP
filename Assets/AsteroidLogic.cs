@@ -24,7 +24,7 @@ public class AsteroidLogic : MonoBehaviour
         shipLogic = GameObject.FindObjectOfType<ShipLogic>();
 
         var rigid = GetComponent<Rigidbody>();
-        var vel = shipLogic.Ship.transform.position - transform.position;
+        var vel = shipLogic.transform.position - transform.position;
         vel.AddRandom(Vector3.zero, new Vector3(20, 0, 20));
         rigid.AddForce(vel * speed);
         rigid.AddTorque(RandomVector(), ForceMode.Impulse);
@@ -40,12 +40,14 @@ public class AsteroidLogic : MonoBehaviour
     public void StartMining()
     {
         if (IsMining == false) { 
-        Destroy(gameObject, 2);
-        var rigid = GetComponent<Rigidbody>();
-        rigid.velocity = Vector3.zero;
+            Destroy(gameObject, 2);
+            var rigid = GetComponent<Rigidbody>();
+            rigid.velocity = Vector3.zero;
 
-        rigid.freezeRotation = true;
-        IsMining = true;
+            rigid.freezeRotation = true;
+            IsMining = true;
+            var hitbox = GetComponentInChildren<SphereCollider>();
+            hitbox.enabled = false;
         }
         
     }

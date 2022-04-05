@@ -1,3 +1,4 @@
+using Assets.Upgrades;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,10 +32,12 @@ public class ShipLogic : MonoBehaviour
     public decimal EnergyGain = 0.001M;
 
 
+    public List<BaseUpgrade> Upgrades= new List<BaseUpgrade>();
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        Upgrades.Add(new DoubleTapUpgrade(this) { Level = 10});
     }
 
     // Update is called once per frame
@@ -70,14 +73,11 @@ public class ShipLogic : MonoBehaviour
                 {
                     LastShot = DateTime.Now;
                     CreateProjectile();
+                    foreach (var upgrade in Upgrades)
+                        upgrade.OnProjectileShoot();
+                    UseEnergy(10);
                 }
             }
-            //renderer.enabled = true;
-            //var mousePos = Input.mousePosition;
-            //var screenPoint = Input.mousePosition;
-            //screenPoint.z = 10.0f; //distance of the plane from the camera
-            
-            //renderer.SetPositions(new Vector3[] { gameObject.transform.position, Camera.main.ScreenToWorldPoint(screenPoint) });
 
         }
         else
@@ -108,7 +108,14 @@ public class ShipLogic : MonoBehaviour
         return (Energy >= 10);
     }
 
-    private void CreateProjectile()
+    private void UseEnergy(decimal toUse)
+    {
+        Energy -= toUse;
+        if(Energy < 0)
+            Energy = 0; 
+    }
+
+    public void CreateProjectile(float? angle = null)
     {
         var obj = GameObject.Instantiate(Projectile.gameObject, gameObject.transform.position, gameObject.transform.rotation);
         var rigid = obj.GetComponent<Rigidbody>();
@@ -117,7 +124,8 @@ public class ShipLogic : MonoBehaviour
 
         var vel = Camera.main.ScreenToWorldPoint(screenPoint) - transform.position;
         vel.y = 0;
+        if (angle.HasValue)
+            rigid.MoveRotation(Quaternion.AngleAxis(angle.Value, Vector3.up));
         rigid.AddForce(vel * ProjectileSpeed);
-        Energy -= 10;
     }
 }
